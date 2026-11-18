@@ -2,7 +2,7 @@
 import { getSupabase } from "./supabase";
 
 // ==========================================
-// CITYROLL — TYPY DANYCH
+// CITYROLL — TYPY
 // ==========================================
 
 export type PawnColor =
@@ -36,36 +36,64 @@ interface RoomResult {
 }
 
 // ==========================================
-// 1. SESJA GRACZA
+// SESJA GRACZA
 // ==========================================
 
 export async function ensureUser() {
   const supabase = getSupabase();
 
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
+  // Sprawdzamy, czy przeglądarka ma sesję.
+  // Brak sesji jest normalny przy pierwszej
+  // wizycie na nowym adresie.
 
-  if (userError) {
-    throw new Error(userError.message);
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.getSession();
+
+  if (sessionError) {
+    throw new Error(sessionError.message);
   }
 
-  if (user) return user;
+  if (sessionData.session) {
+    // Weryfikujemy istniejącą sesję.
+
+    const { data, error } =
+      await supabase.auth.getUser();
+
+    if (data.user && !error) {
+      return data.user;
+    }
+
+    // Sesja wygasła lub została usunięta.
+    // Inne błędy (np. sieci) nie powinny
+    // tworzyć nowego użytkownika.
+
+    if (
+      error &&
+      error.name !== "AuthSessionMissingError" &&
+      error.code !== "session_not_found" &&
+      error.code !== "session_expired" &&
+      error.code !== "invalid_token"
+    ) {
+      throw new Error(error.message);
+    }
+  }
+
+  // Brak aktywnej sesji:
+  // tworzymy anonimowego użytkownika.
 
   const { data, error } =
     await supabase.auth.signInAnonymously();
 
   if (error) {
     throw new Error(
-      "Nie udało się rozpocząć sesji: " +
+      "Nie udało się zalogować gracza: " +
         error.message
     );
   }
 
   if (!data.user) {
     throw new Error(
-      "Nie udało się utworzyć gracza."
+      "Nie udało się utworzyć sesji gracza."
     );
   }
 
@@ -73,7 +101,7 @@ export async function ensureUser() {
 }
 
 // ==========================================
-// 2. TWORZENIE POKOJU
+// TWORZENIE POKOJU
 // ==========================================
 
 export async function createRoom(
@@ -90,7 +118,9 @@ export async function createRoom(
     }
   );
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
 
   const result =
     (data as RoomResult[] | null)?.[0];
@@ -105,7 +135,7 @@ export async function createRoom(
 }
 
 // ==========================================
-// 3. DOŁĄCZANIE DO POKOJU
+// DOŁĄCZANIE DO POKOJU
 // ==========================================
 
 export async function joinRoom(
@@ -124,7 +154,9 @@ export async function joinRoom(
     }
   );
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
 
   const result =
     (data as RoomResult[] | null)?.[0];
@@ -139,7 +171,7 @@ export async function joinRoom(
 }
 
 // ==========================================
-// 4. POBIERANIE POKOJU
+// POBIERANIE POKOJU
 // ==========================================
 
 export async function loadRoom(
@@ -155,9 +187,7 @@ export async function loadRoom(
       .single();
 
   if (roomError || !room) {
-    throw new Error(
-      "Nie można otworzyć pokoju."
-    );
+    throw new Error("Nie można otworzyć pokoju.");
   }
 
   const { data: players, error: playersError } =
@@ -185,7 +215,7 @@ export async function loadRoom(
 }
 
 // ==========================================
-// 5. GOTOWOŚĆ GRACZA
+// GOTOWOŚĆ GRACZA
 // ==========================================
 
 export async function setPlayerReady(
@@ -200,11 +230,13 @@ export async function setPlayerReady(
     }
   );
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
 }
 
 // ==========================================
-// 6. ROZPOCZYNANIE GRY
+// ROZPOCZĘCIE GRY
 // ==========================================
 
 export async function startRoom(
@@ -217,11 +249,13 @@ export async function startRoom(
     }
   );
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
 }
 
 // ==========================================
-// 7. OPUSZCZANIE POKOJU
+// OPUSZCZANIE POKOJU
 // ==========================================
 
 export async function leaveRoom(
@@ -234,5 +268,7 @@ export async function leaveRoom(
     }
   );
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
 }
