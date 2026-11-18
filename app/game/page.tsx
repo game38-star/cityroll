@@ -203,7 +203,7 @@ export default function GamePage() {
           // X na decyzji zakupowej oznacza faktyczną rezygnację,
           // którą zapisujemy w Supabase (nie samo schowanie okna).
           if (state.phase === 'await_purchase' && state.pending_tile === selected && myTurn) {
-            if (!busy) void act('skip', selected);
+            if (!busy) void act('skip', state.pending_tile ?? undefined);
           } else {
             setSelected(null);
           }
