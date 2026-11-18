@@ -1,36 +1,343 @@
-.board { aspect-ratio:1; width:100%; display:grid; grid-template-columns:repeat(8,minmax(0,1fr));
- grid-template-rows:repeat(8,minmax(0,1fr)); gap:2px; padding:3px; background:#e9e7f9;
- border:1px solid #dedaf5; border-radius:17px; box-shadow:0 8px 24px #54629413;
- overflow:hidden; box-sizing:border-box; }
-.tile { position:relative; min-width:0; min-height:0; display:flex; flex-direction:column;
- align-items:center; justify-content:center; gap:1px; border:1.5px solid #dcdfea;
- border-radius:5px; background:#fff; padding:2px 0; color:#3a4560; cursor:pointer;
- text-align:center; overflow:hidden; -webkit-tap-highlight-color:transparent; }
-.tile:active { transform:scale(.96); }
-.selected { outline:2px solid #5845d4; outline-offset:-3px; }
-.number { position:absolute; left:2px; top:1px; font-size:6px; color:#a4aec0; }
-.name { max-width:100%; font-size:clamp(5px,1.58vw,7px); font-weight:850;
- line-height:1.1; overflow-wrap:anywhere; padding:0 1px; }
-.price { font-size:clamp(6px,1.7vw,8px); font-weight:900; color:#7064d6; }
-.ownedStripe { position:absolute; top:0; left:0; right:0; height:4px; }
-.start { background:#d3f7e3; } .card { background:#fff3d6; }
-.jail { background:#fce2dc; } .special { background:#e4efff; }
-.tokens { display:flex; position:absolute; bottom:1px; left:1px; gap:1px; max-width:100%; }
-.token { width:7px; height:7px; border-radius:50%; border:1px solid white;
- box-shadow:0 0 0 1px #5c668066; }
-.center { grid-row:2/8; grid-column:2/8; min-width:0; display:flex;
- flex-direction:column; align-items:center; justify-content:center; gap:clamp(6px,1.6vw,12px);
- padding:10px; text-align:center; background:linear-gradient(145deg,#fff,#f4f1ff);
- border:1px solid #dedaf5; border-radius:11px; }
-.mark { font-size:clamp(20px,6.5vw,32px); font-weight:1000; color:#313955;
- letter-spacing:-1.4px; }
-.mark span { color:#9073ef; }
-.turn { margin:0; font-size:11px; color:#77819a; }
-.turn b { color:#4837bc; }
-.notification { width:100%; min-height:48px; max-height:78px; overflow:auto;
- display:grid; place-items:center; padding:6px 8px; box-sizing:border-box;
- background:#fff; border:1px solid #e9e4ff; border-radius:11px;
- color:#47536e; font-weight:750; font-size:clamp(10px,2.8vw,13px); }
-.six { color:#8b66d4; font-weight:800; font-size:10px; }
-@media(max-width:360px) { .board { gap:1px; } .center { gap:5px; padding:5px; }
- .name { font-size:5.5px; } .token { width:5px; height:5px; } }
+/* CITYROLL — PLANSZA 8 x 8. Zmiana: podzielone kolorowe pola miast. */
+
+.board {
+  aspect-ratio: 1;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  gap: 2px;
+  padding: 3px;
+  background: #e9e7f9;
+  border: 1px solid #dedaf5;
+  border-radius: 17px;
+  box-shadow: 0 8px 24px #54629413;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.tile {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  border: 1.5px solid #dcdfea;
+  border-radius: 5px;
+  background: #fff;
+  padding: 2px 0;
+  color: #3a4560;
+  cursor: pointer;
+  text-align: center;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tile:active {
+  transform: scale(0.96);
+}
+
+.selected {
+  outline: 2px solid #5845d4;
+  outline-offset: -3px;
+}
+
+.number {
+  position: absolute;
+  left: 2px;
+  top: 1px;
+  font-size: 6px;
+  color: #a4aec0;
+}
+
+.name {
+  max-width: 100%;
+  font-size: clamp(5px, 1.58vw, 7px);
+  font-weight: 850;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+  padding: 0 1px;
+}
+
+.price {
+  font-size: clamp(6px, 1.7vw, 8px);
+  font-weight: 900;
+  color: #7064d6;
+}
+
+.ownedStripe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.start { background: #d3f7e3; }
+.card { background: #fff3d6; }
+.jail { background: #fce2dc; }
+.special { background: #e4efff; }
+
+/* -------------------------------------------
+   MIASTA — wyrazny podzial ceny od nazwy.
+   NIE zmieniamy tekstu, numerow ani kwot.
+   Markup Board.tsx juz zawiera .name i .price.
+   ------------------------------------------- */
+
+.city {
+  --city-band: #6879be;
+  --city-price-bg: #f7f8fc;
+  padding: 0;
+  gap: 0;
+  justify-content: stretch;
+  background: var(--city-price-bg);
+}
+
+/* CENA — osobny, jasny pasek, zawsze przy gornej krawedzi. */
+.city .price {
+  order: -1;
+  display: flex;
+  flex: 0 0 31%;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  padding: 1px 2px 0;
+  background: var(--city-price-bg);
+  border-bottom: 1px solid rgb(38 47 82 / 18%);
+  color: #34415f;
+  font-size: clamp(6px, 1.8vw, 8px);
+  font-weight: 950;
+  line-height: 1;
+}
+
+/* MIASTO — oddzielna kolorowa czesc z nazwa. */
+.city .name {
+  order: 0;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 2px 2px;
+  background: var(--city-band);
+  color: #fff;
+  font-size: clamp(5.4px, 1.62vw, 7.8px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.05px;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+/* Numer pola zostaje widoczny na malym pasku ceny. */
+.city .number {
+  z-index: 3;
+  top: 2px;
+  left: 2px;
+  color: #8691aa;
+  font-size: 5px;
+  line-height: 1;
+}
+
+/* Znacznik wlasciciela: po lewej, by nie zaslanial ceny. */
+.city .ownedStripe {
+  z-index: 6;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: auto;
+  width: 3px;
+  height: auto;
+}
+
+/*
+   GRUPY MIAST, NIE ZWYKLE SASIEDZTWO NA PLANSZY.
+   Numery ponizej to numery pol w cityroll_game_fields.
+   Board.tsx wyswietla pola w kolejnosci rosnacych numerow,
+   wiec :nth-child(n) odpowiada polu n (START to dziecko nr 1).
+
+   2 + 3:       GDANSK, GDYNIA
+   4 + 6 + 7:   BOBROWNIKI, TORUN, BYDGOSZCZ
+   9 + 10:      SZCZECIN, KOSZALIN
+   11 + 13 + 14: POZNAN, KALISZ, GNIEZNO
+   16 + 17:     WIELICZKA, KRAKOW
+   18 + 20 + 21: KATOWICE, SOSNOWIEC, ZABRZE
+   23 + 24:     BIALYSTOK, SUWALKI
+   25 + 27 + 28: RZESZOW, NISKO, STALOWA WOLA
+
+   Pola specjalne (5, 8, 12, 15, 19, 22, 26) maja
+   osobny wyglad i nie lacza grup kolorystycznych.
+*/
+
+/* Grupa 1: Gdansk + Gdynia */
+.city:is(:nth-child(2), :nth-child(3)) {
+  --city-band: #427db7;
+}
+
+/* Grupa 2: Bobrowniki + Torun + Bydgoszcz */
+.city:is(:nth-child(4), :nth-child(6), :nth-child(7)) {
+  --city-band: #c26e47;
+}
+
+/* Grupa 3: Szczecin + Koszalin */
+.city:is(:nth-child(9), :nth-child(10)) {
+  --city-band: #aa5187;
+}
+
+/* Grupa 4: Poznan + Kalisz + Gniezno */
+.city:is(:nth-child(11), :nth-child(13), :nth-child(14)) {
+  --city-band: #5a64b2;
+}
+
+/* Grupa 5: Wieliczka + Krakow */
+.city:is(:nth-child(16), :nth-child(17)) {
+  --city-band: #247f85;
+}
+
+/* Grupa 6: Katowice + Sosnowiec + Zabrze */
+.city:is(:nth-child(18), :nth-child(20), :nth-child(21)) {
+  --city-band: #688b47;
+}
+
+/* Grupa 7: Bialystok + Suwalki */
+.city:is(:nth-child(23), :nth-child(24)) {
+  --city-band: #7652af;
+}
+
+/* Grupa 8: Rzeszow + Nisko + Stalowa Wola */
+.city:is(:nth-child(25), :nth-child(27), :nth-child(28)) {
+  --city-band: #c3594b;
+}
+
+/* -------------------------------------------
+   SRODEK PLANSZY — bez zmian funkcjonalnych.
+   ------------------------------------------- */
+
+.center {
+  grid-row: 2 / 8;
+  grid-column: 2 / 8;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1.6vw, 12px);
+  padding: 10px;
+  text-align: center;
+  background: linear-gradient(145deg, #fff, #f4f1ff);
+  border: 1px solid #dedaf5;
+  border-radius: 11px;
+}
+
+.mark {
+  font-size: clamp(20px, 6.5vw, 32px);
+  font-weight: 1000;
+  color: #313955;
+  letter-spacing: -1.4px;
+}
+
+.mark span { color: #9073ef; }
+
+.turn {
+  margin: 0;
+  font-size: 11px;
+  color: #77819a;
+}
+
+.turn b { color: #4837bc; }
+
+.notification {
+  width: 100%;
+  min-height: 48px;
+  max-height: 78px;
+  overflow: auto;
+  display: grid;
+  place-items: center;
+  padding: 6px 8px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #e9e4ff;
+  border-radius: 11px;
+  color: #47536e;
+  font-weight: 750;
+  font-size: clamp(10px, 2.8vw, 13px);
+}
+
+.six {
+  color: #8b66d4;
+  font-weight: 800;
+  font-size: 10px;
+}
+
+/* -------------------------------------------
+   PIONKI — pelne kola SVG z biala obrecza.
+   ------------------------------------------- */
+
+.tokens {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 1px;
+  padding: 1px;
+  z-index: 20;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.token {
+  display: block;
+  width: clamp(22px, 5.9vw, 29px);
+  height: clamp(22px, 5.9vw, 29px);
+  flex: 0 0 auto;
+  overflow: visible;
+  filter: drop-shadow(0 1px 2px rgba(20, 25, 55, 0.45));
+}
+
+.tokens:has(.token:nth-child(3)) .token {
+  width: clamp(17px, 4.4vw, 22px);
+  height: clamp(17px, 4.4vw, 22px);
+}
+
+.walkingToken {
+  animation: pawnHop 260ms ease-in-out both;
+}
+
+@keyframes pawnHop {
+  0% { transform: translateY(1px) scale(0.9); }
+  50% { transform: translateY(-8px) scale(1.18); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 360px) {
+  .board { gap: 1px; }
+  .center { gap: 5px; padding: 5px; }
+  .name { font-size: 5.5px; }
+  .city .name { font-size: 5.5px; }
+  .city .number { font-size: 4.5px; }
+  .token { width: 21px; height: 21px; }
+  .tokens:has(.token:nth-child(3)) .token {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .walkingToken { animation: none; }
+}

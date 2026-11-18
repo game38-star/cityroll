@@ -36,3 +36,120 @@
 @media(max-height:740px) { .container { gap:7px; } .history p:nth-child(n+2) { display:none; } }
 
 .cashWarning { margin: 0; padding: 8px 10px; border: 1px solid #f3d3ac; border-radius: 10px; background: #fff9ed; color: #a36b24; font-size: 11px; }
+
+/* Niewielki pasek decyzji zamiast automatycznej karty szczegółów. */
+.purchasePrompt { background:#fff; border:1px solid #e6e4f4; border-radius:16px;
+  padding:12px; box-shadow:0 5px 18px #4b448414; text-align:left; }
+.purchaseTop { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.purchaseHint { color:#8c83ac; font-size:9px; font-weight:900; letter-spacing:1px; }
+.controls .infoButton { width:auto; min-height:30px; padding:0 8px; color:#6d5dd1;
+  background:#f4f1ff; border-radius:8px; font-size:10px; }
+.purchaseIdentity { display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin:8px 0 12px; }
+.purchaseIdentity strong { font-size:19px; color:#2b3350; }
+.purchaseIdentity b { font-size:18px; color:#7d65e9; white-space:nowrap; }
+.purchaseActions { display:grid; grid-template-columns:1fr 1fr 1.2fr; gap:7px; }
+.controls .purchaseActions button { min-width:0; min-height:42px; border-radius:10px;
+  font-size:11px; padding:4px; }
+.controls .purchaseActions .auctionButton { background:#f0edff; color:#6a55cb; }
+.controls .purchaseActions .skipButton { background:#f4f5f9; color:#66728c; }
+.waitHint { margin:0; }
+.controls .endButton { margin-top:8px; }
+
+/* Wspólna, kompaktowa tablica widoczna identycznie dla wszystkich. */
+.headerCaption { color:#929ab0; font-size:9px; font-weight:800; letter-spacing:.8px; white-space:nowrap; }
+.scoreSection { display:flex; flex-direction:column; gap:6px; }
+.goalLine { display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:2px 5px; color:#7d87a2; font-size:11px; font-weight:700; }
+.goalLine strong { color:#755edc; font-size:12px; white-space:nowrap; }
+.scoreBar { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; overflow:visible; }
+.score { min-width:0; display:flex; flex-direction:column; gap:5px;
+  border:1px solid #ecebf6; border-top:3px solid; border-radius:11px;
+  background:#fff; padding:8px 10px; box-shadow:0 2px 9px #38446c0d; }
+.scoreName { display:flex; align-items:center; gap:5px; min-width:0; }
+.scoreName strong { min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;
+  font-size:12px; color:#293450; }
+.scoreName span:last-child { flex-shrink:0; font-size:11px; }
+.scoreDot { display:block; width:9px; height:9px; min-width:9px; border:2px solid white;
+  border-radius:50%; box-shadow:0 0 0 1px #e8e6f2; }
+.scoreMoney { display:flex; justify-content:space-between; align-items:baseline; gap:6px;
+  font-size:10px; color:#8993a7; }
+.scoreMoney b { font-size:12px; color:#303a55; font-variant-numeric:tabular-nums;
+  white-space:nowrap; }
+.scoreMoney:last-child b { color:#755edc; }
+@media (max-width:350px) {
+  .goalLine { font-size:10px; }
+  .goalLine strong { font-size:11px; }
+  .score { padding:7px; }
+  .scoreMoney b { font-size:11px; }
+}
+
+/* ==========================================
+   KOMPAKTOWY WSPÓLNY RANKING 2–4 GRACZY
+   Zawsze jeden rząd — nie wypycha planszy.
+   ========================================== */
+.container { gap: 8px; }
+.scoreSection { gap: 3px; }
+.goalLine { padding: 1px 5px; font-size: 10px; }
+.goalLine strong { font-size: 11px; }
+.scoreBar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+  overflow: visible;
+}
+.score {
+  min-width: 0;
+  flex: initial;
+  gap: 3px;
+  padding: 5px 5px 6px;
+  border-radius: 9px;
+  border-top-width: 3px;
+}
+.scoreName { gap: 3px; min-width: 0; }
+.scoreName strong { font-size: 10px; line-height: 1.15; }
+.scoreName span:last-child { font-size: 10px; }
+.scoreDot { width: 8px; height: 8px; min-width: 8px; border-width: 1.5px; }
+.scoreMoney { gap: 2px; font-size: 8px; line-height: 1.2; }
+.scoreMoney b { font-size: 10px; letter-spacing: -0.25px; }
+.scoreMoney:last-child b { font-size: 10px; }
+@media(max-width:370px) {
+  .scoreBar { gap: 3px; }
+  .score { padding: 5px 3px; }
+  .scoreName strong { font-size: 9px; }
+  .scoreMoney { font-size: 7.5px; }
+  .scoreMoney b, .scoreMoney:last-child b { font-size: 9px; }
+}
+
+/* 40 sekund: maly okragly licznik przy graczu, ktorego trwa tura. */
+.scoreName .turnClock {
+  flex: 0 0 27px;
+  width: 27px;
+  height: 27px;
+  margin-left: auto;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  position: relative;
+  isolation: isolate;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.scoreName .turnClock::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  z-index: -1;
+  background: #fff;
+  border-radius: 50%;
+}
+.scoreName .turnClock b {
+  position: relative;
+  z-index: 1;
+  color: #453c70;
+  font-size: 10px;
+  line-height: 1;
+}
+@media (max-width: 370px) {
+  .scoreName .turnClock { flex-basis: 23px; width: 23px; height: 23px; }
+  .scoreName .turnClock b { font-size: 9px; }
+}

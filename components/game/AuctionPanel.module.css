@@ -1,17 +1,165 @@
-.panel { background:#fff; border:1px solid #e9e7f6; border-radius:16px; padding:13px;
-  box-shadow:0 5px 18px #39436914; }
-.heading { display:flex; align-items:start; justify-content:space-between; gap:10px; }
-.heading small,.summary small { color:#9aa3b7; font-size:9px; font-weight:850; letter-spacing:.7px; }
-.heading h2 { margin:4px 0 12px; font-size:16px; font-weight:900; color:#343b59; }
-.timer { min-width:50px; padding:8px; text-align:center; border-radius:12px; background:#f0ecff;
-  color:#775fea; font-size:15px; font-weight:900; }
-.summary { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.summary>div { display:flex; flex-direction:column; gap:5px; min-width:0; padding:9px;
-  background:#f8f8ff; border-radius:10px; }
-.summary b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
-.bids { display:grid; grid-template-columns:2fr 1fr; gap:8px; margin-top:12px; }
-.bids button { min-height:44px; border:0; border-radius:11px; background:#826cef; color:#fff;
-  font-size:12px; font-weight:850; cursor:pointer; }
-.bids .extra { background:#f0edff; color:#725dd8; }
-.bids button:disabled { opacity:.5; cursor:not-allowed; }
-.note { margin:10px 0 0; color:#9aa4b7; font-size:11px; line-height:1.4; }
+
+/* ==========================================
+   CITYROLL — PANEL LICYTACJI
+   ========================================== */
+
+.panel {
+  padding: 13px;
+  background: #ffffff;
+  border: 1px solid #e9e7f6;
+  border-radius: 16px;
+  box-shadow: 0 5px 18px #39436914;
+}
+
+/* NAGŁÓWEK */
+
+.heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.heading small,
+.summary small {
+  color: #9aa3b7;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+}
+
+.heading h2 {
+  margin: 4px 0 12px;
+  color: #343b59;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.timer {
+  min-width: 50px;
+  padding: 8px;
+  text-align: center;
+  border-radius: 12px;
+  background: #f0ecff;
+  color: #775fea;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+/* AKTUALNA OFERTA */
+
+.summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  padding: 9px;
+  background: #f8f8ff;
+  border-radius: 10px;
+}
+
+.summary b {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+/* PRZYCISKI LICYTOWANIA */
+
+.bids {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.bids button {
+  min-height: 44px;
+  border: none;
+  border-radius: 11px;
+  background: #826cef;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.bids .extra {
+  background: #f0edff;
+  color: #725dd8;
+}
+
+/* PRZYCISK PASOWANIA */
+
+.passButton {
+  width: 100%;
+  min-height: 43px;
+  margin-top: 9px;
+  padding: 8px 12px;
+
+  border: 1px solid #f0d5d8;
+  border-radius: 11px;
+
+  background: #fff5f5;
+  color: #cf626b;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.passButton:hover:not(:disabled) {
+  background: #ffe9ea;
+  border-color: #e8b7be;
+}
+
+.passButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* WYŁĄCZONE PRZYCISKI */
+
+.bids button:disabled,
+.passButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* INFORMACJA POD LICYTACJĄ */
+
+.note {
+  margin: 10px 0 0;
+  color: #9aa4b7;
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* MAŁE TELEFONY */
+
+@media (max-width: 360px) {
+  .panel {
+    padding: 10px;
+  }
+
+  .heading h2 {
+    font-size: 14px;
+  }
+
+  .bids button,
+  .passButton {
+    min-height: 40px;
+    font-size: 11px;
+  }
+}
