@@ -1,0 +1,6 @@
+.notice { width:100%; min-height:58px; max-height:100px; overflow:auto; padding:7px 10px;
+  box-sizing:border-box; border:1px solid #e7e1ff; border-radius:12px;
+  background:#fff; box-shadow:0 2px 8px #514a9220; text-align:center; }
+.label { font-size:8px; font-weight:900; color:#a29abf; letter-spacing:1.2px; }
+.notice p { margin:5px 0 0; color:#48516c; font-size:clamp(10px,2.75vw,13px);
+  line-height:1.28; font-weight:850; overflow-wrap:anywhere; }

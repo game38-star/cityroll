@@ -1,0 +1,36 @@
+.board { aspect-ratio:1; width:100%; display:grid; grid-template-columns:repeat(8,minmax(0,1fr));
+ grid-template-rows:repeat(8,minmax(0,1fr)); gap:2px; padding:3px; background:#e9e7f9;
+ border:1px solid #dedaf5; border-radius:17px; box-shadow:0 8px 24px #54629413;
+ overflow:hidden; box-sizing:border-box; }
+.tile { position:relative; min-width:0; min-height:0; display:flex; flex-direction:column;
+ align-items:center; justify-content:center; gap:1px; border:1.5px solid #dcdfea;
+ border-radius:5px; background:#fff; padding:2px 0; color:#3a4560; cursor:pointer;
+ text-align:center; overflow:hidden; -webkit-tap-highlight-color:transparent; }
+.tile:active { transform:scale(.96); }
+.selected { outline:2px solid #5845d4; outline-offset:-3px; }
+.number { position:absolute; left:2px; top:1px; font-size:6px; color:#a4aec0; }
+.name { max-width:100%; font-size:clamp(5px,1.58vw,7px); font-weight:850;
+ line-height:1.1; overflow-wrap:anywhere; padding:0 1px; }
+.price { font-size:clamp(6px,1.7vw,8px); font-weight:900; color:#7064d6; }
+.ownedStripe { position:absolute; top:0; left:0; right:0; height:4px; }
+.start { background:#d3f7e3; } .card { background:#fff3d6; }
+.jail { background:#fce2dc; } .special { background:#e4efff; }
+.tokens { display:flex; position:absolute; bottom:1px; left:1px; gap:1px; max-width:100%; }
+.token { width:7px; height:7px; border-radius:50%; border:1px solid white;
+ box-shadow:0 0 0 1px #5c668066; }
+.center { grid-row:2/8; grid-column:2/8; min-width:0; display:flex;
+ flex-direction:column; align-items:center; justify-content:center; gap:clamp(6px,1.6vw,12px);
+ padding:10px; text-align:center; background:linear-gradient(145deg,#fff,#f4f1ff);
+ border:1px solid #dedaf5; border-radius:11px; }
+.mark { font-size:clamp(20px,6.5vw,32px); font-weight:1000; color:#313955;
+ letter-spacing:-1.4px; }
+.mark span { color:#9073ef; }
+.turn { margin:0; font-size:11px; color:#77819a; }
+.turn b { color:#4837bc; }
+.notification { width:100%; min-height:48px; max-height:78px; overflow:auto;
+ display:grid; place-items:center; padding:6px 8px; box-sizing:border-box;
+ background:#fff; border:1px solid #e9e4ff; border-radius:11px;
+ color:#47536e; font-weight:750; font-size:clamp(10px,2.8vw,13px); }
+.six { color:#8b66d4; font-weight:800; font-size:10px; }
+@media(max-width:360px) { .board { gap:1px; } .center { gap:5px; padding:5px; }
+ .name { font-size:5.5px; } .token { width:5px; height:5px; } }

@@ -1,0 +1,17 @@
+.panel { background:#fff; border:1px solid #e9e7f6; border-radius:16px; padding:13px;
+  box-shadow:0 5px 18px #39436914; }
+.heading { display:flex; align-items:start; justify-content:space-between; gap:10px; }
+.heading small,.summary small { color:#9aa3b7; font-size:9px; font-weight:850; letter-spacing:.7px; }
+.heading h2 { margin:4px 0 12px; font-size:16px; font-weight:900; color:#343b59; }
+.timer { min-width:50px; padding:8px; text-align:center; border-radius:12px; background:#f0ecff;
+  color:#775fea; font-size:15px; font-weight:900; }
+.summary { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.summary>div { display:flex; flex-direction:column; gap:5px; min-width:0; padding:9px;
+  background:#f8f8ff; border-radius:10px; }
+.summary b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
+.bids { display:grid; grid-template-columns:2fr 1fr; gap:8px; margin-top:12px; }
+.bids button { min-height:44px; border:0; border-radius:11px; background:#826cef; color:#fff;
+  font-size:12px; font-weight:850; cursor:pointer; }
+.bids .extra { background:#f0edff; color:#725dd8; }
+.bids button:disabled { opacity:.5; cursor:not-allowed; }
+.note { margin:10px 0 0; color:#9aa4b7; font-size:11px; line-height:1.4; }

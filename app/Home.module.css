@@ -1,0 +1,364 @@
+
+/* ==========================================
+   CITYROLL — EKRAN STARTOWY
+   Mobile First / Next.js
+   ========================================== */
+
+/* GŁÓWNY EKRAN */
+
+.page {
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  background: linear-gradient(
+    160deg,
+    #f5f7ff,
+    #ffffff 60%,
+    #f7f5ff
+  );
+
+  color: #25304a;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+
+  padding:
+    max(12px, env(safe-area-inset-top, 0px))
+    20px
+    max(12px, env(safe-area-inset-bottom, 0px));
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: clamp(9px, 1.6dvh, 16px);
+}
+
+/* LOGO */
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logoRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logoIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  box-shadow: 0 6px 16px #6f63e12b;
+}
+
+.logoTitle {
+  margin: 0;
+  color: #25304a;
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -1.8px;
+  line-height: 1;
+}
+
+.logoTitle span {
+  color: #8c76f5;
+}
+
+.subtitle {
+  margin: 9px 0 0;
+  color: #a1a8bb;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+/* POWITANIE */
+
+.intro {
+  text-align: center;
+}
+
+.intro h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.intro p {
+  margin: 6px 0 0;
+  color: #929cb3;
+  font-size: 12px;
+}
+
+/* KARTY */
+
+.card,
+.codeCard {
+  padding: clamp(13px, 2dvh, 20px);
+  border: 1px solid #ebedf5;
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 8px 30px #27305b0f;
+}
+
+.label {
+  display: block;
+  margin: 0 0 9px;
+
+  color: #8791a6;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* POLA TEKSTOWE */
+
+.input {
+  width: 100%;
+  height: clamp(43px, 6dvh, 52px);
+  padding: 0 14px;
+  box-sizing: border-box;
+
+  border: 1.5px solid #e7ebf3;
+  border-radius: 12px;
+
+  background: #fafbfe;
+  color: #25304a;
+
+  font-size: 16px;
+  outline-color: #9b86f3;
+}
+
+.input::placeholder {
+  color: #a4adbd;
+}
+
+.input:focus {
+  border-color: #9b86f3;
+}
+
+.codeCard {
+  padding: 13px 16px;
+}
+
+.codeInput {
+  text-align: center;
+  letter-spacing: 4px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* WYBÓR PIONKÓW */
+
+.pawnSection {
+  margin-top: clamp(12px, 2dvh, 20px);
+}
+
+.pawnGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pawnButton {
+  position: relative;
+
+  width: 100%;
+  height: clamp(55px, 9dvh, 72px);
+
+  padding: 4px;
+
+  display: grid;
+  place-items: center;
+
+  border: 2px solid #e9edf5;
+  border-radius: 13px;
+
+  background: #f8f9fc;
+
+  cursor: pointer;
+  touch-action: manipulation;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.15s ease;
+}
+
+.pawnSelected {
+  background: #f2edff;
+  box-shadow: 0 4px 14px #9b77f525;
+}
+
+.pawnButton:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* ZAJĘTY PIONEK */
+
+.pawnTaken {
+  opacity: 0.42;
+  background: #e9eaf0;
+  border-color: #d9dce6 !important;
+  cursor: not-allowed;
+}
+
+.pawnTaken svg {
+  filter: grayscale(1);
+}
+
+.takenLabel {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 3px;
+
+  padding: 2px 0;
+
+  border-radius: 4px;
+  background: #64748b;
+
+  color: white;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+
+/* INFORMACJA O WOLNYCH KOLORACH */
+
+.availabilityInfo {
+  min-height: 15px;
+  margin: 10px 0 0;
+
+  color: #8590a6;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* PRZYCISKI */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.createButton,
+.joinButton {
+  width: 100%;
+  height: clamp(48px, 7dvh, 56px);
+
+  border-radius: 14px;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.createButton {
+  border: none;
+
+  background: linear-gradient(
+    110deg,
+    #9a7af8,
+    #7364ed
+  );
+
+  color: white;
+  box-shadow: 0 6px 18px #7e69ed38;
+}
+
+.joinButton {
+  border: 1.5px solid #e6e9f3;
+  background: white;
+  color: #4b5572;
+}
+
+.createButton:active:not(:disabled),
+.joinButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.createButton:disabled,
+.joinButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* KOMUNIKATY */
+
+.message {
+  margin: 0;
+  padding: 10px;
+
+  border-radius: 10px;
+  background: #fff5e9;
+
+  color: #ac763c;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* STOPKA */
+
+.footer {
+  color: #a5afc2;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  text-align: center;
+}
+
+/* MAŁE TELEFONY */
+
+@media (max-height: 690px) {
+  .container {
+    gap: 8px;
+  }
+
+  .intro h2 {
+    font-size: 17px;
+  }
+
+  .intro p {
+    font-size: 11px;
+  }
+
+  .card {
+    padding: 13px;
+  }
+
+  .pawnSection {
+    margin-top: 11px;
+  }
+}
+
+/* DOSTĘPNOŚĆ */
+
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
